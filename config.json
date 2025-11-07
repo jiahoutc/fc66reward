@@ -1,0 +1,6 @@
+{
+  "brand": { "title": "FC66 Reward", "subtitle": "Pick 1 Safe • Unlock Your Bonus" },
+  "background": { "type": "color", "color": "#0a0c12" },
+  "claim": { "link": "#", "button_text": "🎁 领取奖励" },
+  "rewards": ["Free $10 Credit", "16% Happy Hour Bonus", "100% Welcome Bonus (Cap $188)"]
+}

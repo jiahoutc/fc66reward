@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FC66 Reward — 三选一保险箱</title>
+<meta name="description" content="选择一个保险箱，解锁你的奖励。">
+<style>
+  :root{
+    --bg1:#0a0c12; --bg2:#141820; --gold:#f6c84c; --gold2:#ffdf7f; --muted:#a8b0c0;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family: Inter, "Segoe UI", Roboto, Arial, "PingFang SC";
+    color:#eaf0ff; display:flex; align-items:center; justify-content:center; padding:24px;
+    background: linear-gradient(180deg, var(--bg1), var(--bg2)); background-size:cover; background-position:center;
+  }
+  .wrap{ width:100%; max-width:1100px; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04); position:relative; overflow:hidden; }
+  .wrap::before{content:""; position:absolute; inset:-40% -20%; background: conic-gradient(from 0deg, rgba(255,215,128,.04), transparent 30%, rgba(255,0,0,.05), transparent 70%);
+    filter: blur(30px); animation: spin 16s linear infinite;}
+  @keyframes spin{to{transform:rotate(1turn)}}
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; position:relative; z-index:2; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .logo{ width:42px; height:42px; border-radius:12px; background: radial-gradient(circle at 30% 30%, var(--gold2), var(--gold) 60%, #b0852a 100%);
+    display:grid; place-items:center; font-weight:900; color:#1b1206; box-shadow: 0 0 0 2px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.4); }
+  .brand h1{ font-size:18px; margin:0; letter-spacing:.5px }
+  .sub{ color:var(--muted); font-size:12px }
+  .hero{ margin:14px 0 4px; padding:14px; border-radius:14px; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.2));
+    border:1px solid rgba(255,255,255,.06); }
+  .hero h2{ margin:0 0 6px; font-size:24px }
+  .hero p{ margin:0; color:var(--muted); font-size:13px }
+  .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
+  button{ padding:11px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:800; letter-spacing:.3px;
+    background:linear-gradient(90deg, #ffcc6c, #ff6a6a); color:#130a02; box-shadow:0 10px 28px rgba(255,106,106,.25), inset 0 0 0 1px rgba(255,255,255,.25); }
+  .btn-ghost{ background:transparent; color:#ffd; border:1px solid rgba(255,255,255,.12); box-shadow:none; font-weight:700; }
+  .board{ margin-top:14px; padding:12px; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
+  .safe{ position:relative; background: radial-gradient(120px 80px at 30% 30%, rgba(255,215,128,.10), rgba(255,215,128,.04) 60%, transparent 70%), linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px; text-align:center; cursor:pointer; user-select:none;
+    transition:.28s transform cubic-bezier(.2,.9,.2,1), box-shadow .28s, filter .28s; overflow:hidden; }
+  .safe:hover{ transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,.55) }
+  .safe .icon{ font-size:44px; line-height:1; }
+  .safe .lab{ color:var(--muted); font-size:13px; margin-top:8px }
+  .safe.opening{ animation: tilt .8s both } @keyframes tilt{0%{transform:perspective(600px) rotateX(0)} 40%{transform:perspective(600px) rotateX(12deg) translateY(-8px) scale(1.02)} 100%{transform:translateY(-6px) scale(1.03)}}
+  .safe.opened{ border-color:rgba(246,200,76,.6); background:linear-gradient(180deg, rgba(246,200,76,.25), rgba(255,255,255,.06)); }
+  .status{ color:var(--muted); font-size:13px; margin:10px 4px 0 }
+  .result{ margin-top:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .badge{ padding:8px 12px; border-radius:999px; background:rgba(246,200,76,.14); border:1px solid rgba(246,200,76,.4); color:#ffe9a8; font-weight:700; font-size:12px; }
+  .claim{ display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; border:1px dashed rgba(246,200,76,.55); color:#ffe9a8; text-decoration:none; font-weight:800; letter-spacing:.3px; transition: transform .2s; }
+  .claim:hover{ transform:translateY(-2px) }
+  .note{ color:#9aa6b2; font-size:12px }
+  .footer{ margin-top:18px; color:#8f97a6; font-size:12px }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">FC</div>
+        <div>
+          <h1 id="brandTitle">FC66 Reward</h1>
+          <div id="brandSub" class="sub">Pick 1 Safe • Unlock Your Bonus</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h2>三选一保险箱</h2>
+      <p>请选择任意保险箱以解锁奖励。</p>
+    </div>
+
+    <div id="board" class="board"></div>
+
+    <div class="result">
+      <div id="status" class="badge">状态：加载中…</div>
+      <a id="claimBtn" href="#" target="_blank" class="claim">🎁 领取奖励</a>
+    </div>
+
+    <div class="footer">© FC66 Reward</div>
+  </div>
+
+<script>
+(async function(){
+  const board=document.getElementById('board');
+  const statusEl=document.getElementById('status');
+  const claimBtn=document.getElementById('claimBtn');
+  let CFG=null; let items=[]; let winner=null;
+  function setStatus(t){statusEl.textContent="状态："+t;}
+  async function loadConfig(){
+    const res=await fetch('config.json?ts='+Date.now());
+    CFG=await res.json();
+    document.title=CFG.brand.title;
+    document.body.style.background=CFG.background.color;
+    claimBtn.href=CFG.claim.link;
+    claimBtn.textContent=CFG.claim.button_text;
+    render();
+  }
+  function render(){
+    board.innerHTML=''; items=[];
+    for(let i=0;i<3;i++){
+      const div=document.createElement('div');
+      div.className='safe';
+      div.innerHTML=`<div class='icon'>🔒</div><div class='lab'>保险箱 ${i+1}</div>`;
+      div.onclick=()=>open(i);
+      board.appendChild(div);
+      items.push(div);
+    }
+    winner=Math.floor(Math.random()*3);
+    setStatus('请选择一个保险箱');
+  }
+  function open(i){
+    const div=items[i];
+    div.classList.add('opened');
+    div.querySelector('.icon').textContent='📦';
+    if(i===winner){
+      setStatus('恭喜！获得 '+(CFG.rewards[Math.floor(Math.random()*CFG.rewards.length)]));
+    }else{
+      setStatus('没中，再试试吧！');
+    }
+  }
+  await loadConfig();
+})();
+</script>
+</body>
+</html>
