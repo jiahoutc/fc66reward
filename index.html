@@ -6,55 +6,71 @@
 <title>FC66 Reward — 三选一保险箱</title>
 <meta name="description" content="选择一个保险箱，解锁你的奖励。">
 <style>
-  :root{
-    --bg1:#0a0c12; --bg2:#141820; --gold:#f6c84c; --gold2:#ffdf7f; --muted:#a8b0c0;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
+  :root{ --bg1:#0a0c12; --bg2:#141820; --gold:#f6c84c; --gold2:#ffdf7f; --muted:#a8b0c0; }
+  *{ box-sizing:border-box }
+  html,body{ height:100% }
   body{
     margin:0; font-family: Inter, "Segoe UI", Roboto, Arial, "PingFang SC";
     color:#eaf0ff; display:flex; align-items:center; justify-content:center; padding:24px;
     background: linear-gradient(180deg, var(--bg1), var(--bg2)); background-size:cover; background-position:center;
   }
-  .wrap{ width:100%; max-width:1100px; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+  .wrap{
+    width:100%; max-width:1100px; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
     border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:18px;
-    box-shadow:0 20px 50px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04); position:relative; overflow:hidden; }
-  .wrap::before{content:""; position:absolute; inset:-40% -20%; background: conic-gradient(from 0deg, rgba(255,215,128,.04), transparent 30%, rgba(255,0,0,.05), transparent 70%);
+    box-shadow:0 20px 50px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04);
+    position:relative; overflow:hidden;
+  }
+  .wrap::before{content:""; position:absolute; inset:-40% -20%;
+    background: conic-gradient(from 0deg, rgba(255,215,128,.04), transparent 30%, rgba(255,0,0,.05), transparent 70%);
     filter: blur(30px); animation: spin 16s linear infinite;}
   @keyframes spin{to{transform:rotate(1turn)}}
+
   .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; position:relative; z-index:2; }
   .brand{ display:flex; align-items:center; gap:12px; }
   .logo{ width:42px; height:42px; border-radius:12px; background: radial-gradient(circle at 30% 30%, var(--gold2), var(--gold) 60%, #b0852a 100%);
     display:grid; place-items:center; font-weight:900; color:#1b1206; box-shadow: 0 0 0 2px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.4); }
   .brand h1{ font-size:18px; margin:0; letter-spacing:.5px }
   .sub{ color:var(--muted); font-size:12px }
+
   .hero{ margin:14px 0 4px; padding:14px; border-radius:14px; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.2));
     border:1px solid rgba(255,255,255,.06); }
   .hero h2{ margin:0 0 6px; font-size:24px }
   .hero p{ margin:0; color:var(--muted); font-size:13px }
   .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
-  button{ padding:11px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:800; letter-spacing:.3px;
+  .btn{ padding:11px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:800; letter-spacing:.3px;
     background:linear-gradient(90deg, #ffcc6c, #ff6a6a); color:#130a02; box-shadow:0 10px 28px rgba(255,106,106,.25), inset 0 0 0 1px rgba(255,255,255,.25); }
   .btn-ghost{ background:transparent; color:#ffd; border:1px solid rgba(255,255,255,.12); box-shadow:none; font-weight:700; }
+
   .board{ margin-top:14px; padding:12px; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
-  .safe{ position:relative; background: radial-gradient(120px 80px at 30% 30%, rgba(255,215,128,.10), rgba(255,215,128,.04) 60%, transparent 70%), linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+  .safe{
+    position:relative; background: radial-gradient(120px 80px at 30% 30%, rgba(255,215,128,.10), rgba(255,215,128,.04) 60%, transparent 70%),
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
     border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px; text-align:center; cursor:pointer; user-select:none;
-    transition:.28s transform cubic-bezier(.2,.9,.2,1), box-shadow .28s, filter .28s; overflow:hidden; }
+    transition:.28s transform cubic-bezier(.2,.9,.2,1), box-shadow .28s, filter .28s; overflow:hidden;
+  }
   .safe:hover{ transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,.55) }
   .safe .icon{ font-size:44px; line-height:1; }
   .safe .lab{ color:var(--muted); font-size:13px; margin-top:8px }
-  .safe.opening{ animation: tilt .8s both } @keyframes tilt{0%{transform:perspective(600px) rotateX(0)} 40%{transform:perspective(600px) rotateX(12deg) translateY(-8px) scale(1.02)} 100%{transform:translateY(-6px) scale(1.03)}}
+  .safe.opening{ animation: tilt .8s both }
+  @keyframes tilt{ 0%{transform:perspective(600px) rotateX(0)}
+    40%{transform:perspective(600px) rotateX(12deg) translateY(-8px) scale(1.02)}
+    100%{transform:translateY(-6px) scale(1.03)} }
   .safe.opened{ border-color:rgba(246,200,76,.6); background:linear-gradient(180deg, rgba(246,200,76,.25), rgba(255,255,255,.06)); }
+
   .status{ color:var(--muted); font-size:13px; margin:10px 4px 0 }
   .result{ margin-top:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .badge{ padding:8px 12px; border-radius:999px; background:rgba(246,200,76,.14); border:1px solid rgba(246,200,76,.4); color:#ffe9a8; font-weight:700; font-size:12px; }
   .claim{ display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; border:1px dashed rgba(246,200,76,.55); color:#ffe9a8; text-decoration:none; font-weight:800; letter-spacing:.3px; transition: transform .2s; }
   .claim:hover{ transform:translateY(-2px) }
-  .note{ color:#9aa6b2; font-size:12px }
   .footer{ margin-top:18px; color:#8f97a6; font-size:12px }
+
+  .timer{ font-weight:800; color:#ffe9a8; padding:6px 10px; border-radius:10px; border:1px solid rgba(246,200,76,.4); background:rgba(246,200,76,.12); }
+  .mute{ background:transparent; color:#ffd; border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:8px 12px; cursor:pointer; }
+  canvas.confetti{ position:fixed; inset:0; pointer-events:none; z-index:999; }
 </style>
 </head>
 <body>
+  <canvas id="confetti" class="confetti"></canvas>
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
@@ -64,18 +80,25 @@
           <div id="brandSub" class="sub">Pick 1 Safe • Unlock Your Bonus</div>
         </div>
       </div>
+      <div class="sub" style="display:flex;gap:10px;align-items:center;">
+        <span id="timer" class="timer" style="display:none"></span>
+        <button id="muteBtn" class="mute">🔈</button>
+      </div>
     </div>
 
     <div class="hero">
       <h2>三选一保险箱</h2>
       <p>请选择任意保险箱以解锁奖励。</p>
+      <div class="controls">
+        <button id="resetBtn" class="btn-ghost">重置</button>
+      </div>
     </div>
 
     <div id="board" class="board"></div>
 
     <div class="result">
       <div id="status" class="badge">状态：加载中…</div>
-      <a id="claimBtn" href="#" target="_blank" class="claim">🎁 领取奖励</a>
+      <a id="claimBtn" href="#" target="_blank" rel="noopener" class="claim">🎁 领取奖励</a>
     </div>
 
     <div class="footer">© FC66 Reward</div>
@@ -83,43 +106,182 @@
 
 <script>
 (async function(){
-  const board=document.getElementById('board');
-  const statusEl=document.getElementById('status');
-  const claimBtn=document.getElementById('claimBtn');
-  let CFG=null; let items=[]; let winner=null;
-  function setStatus(t){statusEl.textContent="状态："+t;}
+  // ---- 简易音效（WebAudio） ----
+  const AudioKit = (function(){
+    const ctx = window.AudioContext ? new AudioContext() : null;
+    function beep(freq=880, t=0.08, type='sine', gain=0.05){
+      if(!ctx) return;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = type; osc.frequency.value = freq;
+      g.gain.value = gain;
+      osc.connect(g); g.connect(ctx.destination);
+      osc.start();
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t);
+      setTimeout(()=>{ osc.stop(); osc.disconnect(); g.disconnect(); }, t*1000+20);
+    }
+    return {beep, ctx};
+  })();
+
+  // ---- 轻量 confetti ----
+  const cfCanvas = document.getElementById('confetti');
+  const cfx = cfCanvas.getContext('2d');
+  let confettiArr = [];
+  function resize(){ cfCanvas.width = innerWidth; cfCanvas.height = innerHeight; }
+  window.addEventListener('resize', resize); resize();
+  function spawnConfetti(n=120){
+    confettiArr = Array.from({length:n}, ()=>({
+      x: Math.random()*cfCanvas.width,
+      y: -10 - Math.random()*cfCanvas.height*0.5,
+      r: 2+Math.random()*4,
+      vx: -1+Math.random()*2,
+      vy: 2+Math.random()*3,
+      a: Math.random()*Math.PI,
+      s: 0.02+Math.random()*0.04
+    }));
+  }
+  function drawConfetti(){
+    cfx.clearRect(0,0,cfCanvas.width, cfCanvas.height);
+    confettiArr.forEach(p=>{
+      p.x += p.vx; p.y += p.vy; p.a += p.s;
+      cfx.save();
+      cfx.translate(p.x, p.y);
+      cfx.rotate(p.a);
+      cfx.fillStyle = ['#ffd36b','#ff9e57','#6ecbff','#ff6aa8'][p.r%4|0];
+      cfx.fillRect(-p.r, -p.r, p.r*2, p.r*2);
+      cfx.restore();
+    });
+    confettiArr = confettiArr.filter(p=>p.y < cfCanvas.height+20);
+    if(confettiArr.length) requestAnimationFrame(drawConfetti);
+  }
+  function celebrate(){ spawnConfetti(140); drawConfetti(); }
+
+  const brandTitle = document.getElementById('brandTitle');
+  const brandSub   = document.getElementById('brandSub');
+  const board      = document.getElementById('board');
+  const statusEl   = document.getElementById('status');
+  const claimBtn   = document.getElementById('claimBtn');
+  const resetBtn   = document.getElementById('resetBtn');
+  const muteBtn    = document.getElementById('muteBtn');
+  const timerEl    = document.getElementById('timer');
+
+  let CFG=null, items=[], winner=null, audio=null, isMuted=false;
+
+  function setStatus(t){ statusEl.textContent = "状态：" + t; }
+
   async function loadConfig(){
-    const res=await fetch('config.json?ts='+Date.now());
-    CFG=await res.json();
-    document.title=CFG.brand.title;
-    document.body.style.background=CFG.background.color;
-    claimBtn.href=CFG.claim.link;
-    claimBtn.textContent=CFG.claim.button_text;
+    const res = await fetch('config.json?ts=' + Date.now());
+    CFG = await res.json();
+
+    // 品牌
+    brandTitle.textContent = CFG.brand?.title || 'FC66 Reward';
+    brandSub.textContent   = CFG.brand?.subtitle || 'Pick 1 Safe • Unlock Your Bonus';
+
+    // 背景
+    if(CFG.background?.type === 'image' && CFG.background?.image_url){
+      document.body.style.backgroundImage = `url('${CFG.background.image_url}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    }else{
+      document.body.style.backgroundImage = 'none';
+      document.body.style.background = CFG.background?.color || '#0a0c12';
+    }
+
+    // 音乐
+    if(audio){ try{audio.pause();}catch(e){} }
+    if(CFG.music?.enabled && CFG.music?.url){
+      audio = new Audio(CFG.music.url);
+      audio.loop = true;
+      audio.volume = Math.max(0, Math.min(1, CFG.music.volume ?? 0.35));
+      if(CFG.music.autoplay){ audio.play().catch(()=>{}); }
+    }else{ audio = null; }
+
+    // 倒计时
+    if(CFG.event?.show_timer && CFG.event?.deadline){
+      timerEl.style.display = 'inline-block';
+      startCountdown(new Date(CFG.event.deadline));
+    }else{
+      timerEl.style.display = 'none';
+    }
+
+    // 按钮
+    claimBtn.href = CFG.claim?.link || '#';
+    claimBtn.textContent = CFG.claim?.button_text || '🎁 领取奖励';
+
     render();
+  }
+
+  // 倒计时
+  let tmr = null;
+  function startCountdown(deadline){
+    if(tmr) clearInterval(tmr);
+    function fmt(n){ return n<10 ? '0'+n : ''+n; }
+    function tick(){
+      const now = new Date();
+      let ms = deadline - now;
+      if(ms <= 0){
+        timerEl.textContent = '活动已结束';
+        return clearInterval(tmr);
+      }
+      const d = Math.floor(ms/86400000); ms%=86400000;
+      const h = Math.floor(ms/3600000); ms%=3600000;
+      const m = Math.floor(ms/60000); ms%=60000;
+      const s = Math.floor(ms/1000);
+      timerEl.textContent = `倒计时 ${d}天 ${fmt(h)}:${fmt(m)}:${fmt(s)}`;
+    }
+    tick(); tmr = setInterval(tick, 1000);
+  }
+
+  // 渲染 & 交互
+  function createItem(i){
+    const div = document.createElement('div');
+    div.className='safe';
+    div.innerHTML=`<div class='icon'>🔒</div><div class='lab'>保险箱 ${i+1}</div>`;
+    div.onclick = ()=> open(i);
+    return div;
   }
   function render(){
     board.innerHTML=''; items=[];
-    for(let i=0;i<3;i++){
-      const div=document.createElement('div');
-      div.className='safe';
-      div.innerHTML=`<div class='icon'>🔒</div><div class='lab'>保险箱 ${i+1}</div>`;
-      div.onclick=()=>open(i);
-      board.appendChild(div);
-      items.push(div);
-    }
-    winner=Math.floor(Math.random()*3);
+    for(let i=0;i<3;i++){ const el=createItem(i); items.push(el); board.appendChild(el); }
+    winner = Math.floor(Math.random()*3);
     setStatus('请选择一个保险箱');
   }
-  function open(i){
-    const div=items[i];
-    div.classList.add('opened');
-    div.querySelector('.icon').textContent='📦';
-    if(i===winner){
-      setStatus('恭喜！获得 '+(CFG.rewards[Math.floor(Math.random()*CFG.rewards.length)]));
-    }else{
-      setStatus('没中，再试试吧！');
-    }
+  function chooseReward(){
+    const arr = Array.isArray(CFG.rewards) ? CFG.rewards.filter(Boolean) : [];
+    if(!arr.length) return null;
+    const idx = Math.floor(Math.random()*arr.length);
+    return arr[idx];
   }
+  function open(i){
+    const el = items[i];
+    if(el.classList.contains('opened')) return;
+    el.classList.add('opening');
+    setTimeout(()=>{
+      el.classList.remove('opening');
+      el.classList.add('opened');
+      el.querySelector('.icon').textContent='📦';
+      if(i===winner){
+        const rw = chooseReward();
+        setStatus('恭喜！获得 ' + (rw || '奖励'));
+        celebrate();
+        AudioKit.beep(1200, .12, 'square', .08);
+        setTimeout(()=>AudioKit.beep(1400,.1,'square',.07), 130);
+      }else{
+        setStatus('没中，再试试吧！');
+        AudioKit.beep(420, .1, 'sawtooth', .06);
+      }
+    }, 520);
+  }
+
+  resetBtn.onclick = ()=> render();
+  muteBtn.onclick = ()=>{
+    if(!audio){ return; }
+    isMuted = !isMuted;
+    audio.muted = isMuted;
+    muteBtn.textContent = isMuted ? '🔇' : '🔈';
+    if(!isMuted){ audio.play().catch(()=>{}); }
+  };
+
   await loadConfig();
 })();
 </script>
