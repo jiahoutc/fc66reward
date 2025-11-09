@@ -4,3 +4,34 @@
   "claim": { "link": "#", "button_text": "🎁 领取奖励" },
   "rewards": ["Free $10 Credit", "16% Happy Hour Bonus", "100% Welcome Bonus (Cap $188)"]
 }
+{
+  "brand": {
+    "title": "FC66 Reward",
+    "subtitle": "Pick 1 Safe • Unlock Your Bonus"
+  },
+  "background": {
+    "type": "color",              // "color" 或 "image"
+    "color": "#0a0c12",
+    "image_url": "uploads/bg-default.jpg"
+  },
+  "music": {
+    "enabled": false,             // true 开启
+    "url": "uploads/bgm.mp3",
+    "autoplay": false,
+    "volume": 0.35
+  },
+  "event": {
+    "show_timer": true,           // 是否显示倒计时
+    "deadline": "2025-12-31T23:59:59+08:00"
+  },
+  "claim": {
+    "link": "#",                  // 改成你的 WhatsApp / 注册页
+    "button_text": "🎁 领取奖励"
+  },
+  "rewards": [
+    "Free $10 Credit",
+    "16% Happy Hour Bonus",
+    "100% Welcome Bonus (Cap $188)"
+  ]
+}
+
