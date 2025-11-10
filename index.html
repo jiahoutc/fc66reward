@@ -373,6 +373,100 @@
   }
 })();
 </script>
+  <script>
+(async () => {
+  const CONFIG_URL = 'https://admin.fc66reward.com/config.json?ts=' + Date.now();
+
+  // 读取后台配置
+  let cfg;
+  try {
+    const r = await fetch(CONFIG_URL);
+    cfg = await r.json();
+  } catch (e) {
+    console.warn('[FC66] 拉取 config 失败：', e);
+    return;
+  }
+  console.log('[FC66] 已加载配置：', cfg);
+
+  // 1) 背景（强制覆盖任何 gradient）
+  if (cfg?.background?.type === 'image' && cfg?.background?.image_url) {
+    const css = `
+      body{
+        background-image:url('${cfg.background.image_url}') !important;
+        background-size:cover !important;
+        background-position:center center !important;
+        background-attachment:fixed !important;
+        background-color:transparent !important;
+      }`;
+    let s = document.getElementById('dynbg');
+    if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
+    s.textContent = css;
+    console.log('[FC66] 背景→图片', cfg.background.image_url);
+  } else if (cfg?.background?.color) {
+    let s = document.getElementById('dynbg');
+    if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
+    s.textContent = `body{ background:${cfg.background.color} !important }`;
+    console.log('[FC66] 背景→纯色', cfg.background.color);
+  }
+
+  // 2) 品牌标题/副标题
+  const titleEl = document.querySelector('#brandTitle, .brand h1, h1');
+  if (titleEl && cfg?.brand?.title) titleEl.textContent = cfg.brand.title;
+  const subEl = document.querySelector('#brandSub, .sub, .brand small');
+  if (subEl && cfg?.brand?.subtitle) subEl.textContent = cfg.brand.subtitle;
+
+  // 3) 领取按钮（文字+链接）
+  const claimBtn = document.querySelector('#claim, a.claim, a[href="#"]');
+  if (claimBtn) {
+    if (cfg?.claim?.button_text) claimBtn.textContent = cfg.claim.button_text;
+    if (cfg?.claim?.link) {
+      claimBtn.setAttribute('href', cfg.claim.link);
+      claimBtn.setAttribute('target','_blank');
+      claimBtn.setAttribute('rel','noopener');
+    }
+  }
+
+  // 4) 背景音乐
+  try {
+    if (cfg?.music?.enabled && cfg?.music?.url) {
+      const audio = new Audio(cfg.music.url);
+      audio.loop = true;
+      audio.volume = Math.max(0, Math.min(1, cfg.music.volume ?? 0.35));
+      if (cfg.music.autoplay) audio.play().catch(()=>{});
+      // 若页面已有“静音”按钮，顺便绑定一下
+      const muteBtn = document.getElementById('mute');
+      if (muteBtn) {
+        let muted = false;
+        muteBtn.addEventListener('click', ()=>{
+          muted = !muted; audio.muted = muted; muteBtn.textContent = muted ? '🔇' : '🔈';
+          if (!muted) audio.play().catch(()=>{});
+        });
+      }
+      console.log('[FC66] 音乐→', cfg.music.url);
+    }
+  } catch(e){ console.warn('[FC66] 音乐初始化失败', e); }
+
+  // 5) 倒计时（如果你的页面没有显示位，可以忽略）
+  const timerEl = document.getElementById('timer');
+  if (timerEl && cfg?.event?.show_timer && cfg?.event?.deadline) {
+    timerEl.style.display = 'inline-block';
+    const pad=n=>n<10?'0'+n:n;
+    const deadline = new Date(cfg.event.deadline);
+    const tick = () => {
+      let ms = deadline - new Date();
+      if (ms <= 0) { timerEl.textContent = '活动已结束'; return clearInterval(tid); }
+      const d = Math.floor(ms/86400000); ms%=86400000;
+      const h = Math.floor(ms/3600000);  ms%=3600000;
+      const m = Math.floor(ms/60000);    ms%=60000;
+      const s = Math.floor(ms/1000);
+      timerEl.textContent = `倒计时 ${d}天 ${pad(h)}:${pad(m)}:${pad(s)}`;
+    };
+    tick(); const tid = setInterval(tick, 1000);
+  }
+})();
+</script>
+
 
 </html>
+
 
