@@ -341,5 +341,38 @@
   await loadConfig();
 })();
 </script>
-</body>
+</body><script>
+(async () => {
+  try {
+    const res = await fetch('https://admin.fc66reward.com/config.json?ts=' + Date.now());
+    const cfg = await res.json();
+
+    if (cfg?.background?.type === 'image' && cfg?.background?.image_url) {
+      // 用 <style> 动态覆盖 body 背景，带 !important，确保压过原来的 linear-gradient
+      const css = `
+        body{
+          background-image: url('${cfg.background.image_url}') !important;
+          background-size: cover !important;
+          background-position: center center !important;
+          background-attachment: fixed !important;
+          background-color: transparent !important;
+        }`;
+      let s = document.getElementById('dynbg');
+      if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
+      s.textContent = css;
+      console.log('[FC66] 背景已切换为图片：', cfg.background.image_url);
+    } else {
+      console.log('[FC66] 使用纯色背景：', cfg?.background?.color);
+      // 如果你希望纯色时也覆盖旧的 gradient，可以打开下面这段：
+      // const s = document.getElementById('dynbg') || Object.assign(document.createElement('style'), {id:'dynbg'});
+      // s.textContent = `body{ background: ${cfg?.background?.color || '#0a0c12'} !important }`;
+      // document.head.appendChild(s);
+    }
+  } catch (e) {
+    console.warn('[FC66] 读取配置失败：', e);
+  }
+})();
+</script>
+
 </html>
+
