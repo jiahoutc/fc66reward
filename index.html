@@ -6,176 +6,234 @@
 <title>FC66 Reward — 三选一保险箱</title>
 <meta name="description" content="选择一个保险箱，解锁你的奖励。">
 <style>
-  :root{ --bg1:#0a0c12; --bg2:#141820; --gold:#f6c84c; --gold2:#ffdf7f; --muted:#a8b0c0; }
-  *{ box-sizing:border-box }
-  html,body{ height:100% }
+  :root{
+    --bg1:#07090f; --bg2:#111520;
+    --gold:#ffd36b; --rose:#ff6a6a; --blue:#6bc2ff; --vio:#a97bff;
+    --text:#eaf0ff; --muted:#94a0b2;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
   body{
-    margin:0; font-family: Inter, "Segoe UI", Roboto, Arial, "PingFang SC";
-    color:#eaf0ff; display:flex; align-items:center; justify-content:center; padding:24px;
-    background: linear-gradient(180deg, var(--bg1), var(--bg2)); background-size:cover; background-position:center;
+    margin:0; color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"PingFang SC";
+    background: radial-gradient(1200px 800px at 20% -10%, rgba(255,255,255,.06), transparent 50%),
+                radial-gradient(1000px 700px at 120% 0%, rgba(255,255,255,.05), transparent 45%),
+                linear-gradient(180deg, var(--bg1), var(--bg2));
+    background-size:cover; background-position:center;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    overflow-x:hidden;
   }
-  .wrap{
-    width:100%; max-width:1100px; background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-    border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:18px;
-    box-shadow:0 20px 50px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04);
-    position:relative; overflow:hidden;
-  }
-  .wrap::before{content:""; position:absolute; inset:-40% -20%;
-    background: conic-gradient(from 0deg, rgba(255,215,128,.04), transparent 30%, rgba(255,0,0,.05), transparent 70%);
-    filter: blur(30px); animation: spin 16s linear infinite;}
-  @keyframes spin{to{transform:rotate(1turn)}}
 
-  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; position:relative; z-index:2; }
-  .brand{ display:flex; align-items:center; gap:12px; }
-  .logo{ width:42px; height:42px; border-radius:12px; background: radial-gradient(circle at 30% 30%, var(--gold2), var(--gold) 60%, #b0852a 100%);
-    display:grid; place-items:center; font-weight:900; color:#1b1206; box-shadow: 0 0 0 2px rgba(0,0,0,.4), 0 8px 20px rgba(0,0,0,.4); }
-  .brand h1{ font-size:18px; margin:0; letter-spacing:.5px }
+  /* 霓虹光带 */
+  .neon{
+    position:fixed; inset:-30% -30%;
+    background:
+      radial-gradient(500px 200px at 20% 20%, rgba(255,208,112,.12), transparent 60%),
+      radial-gradient(400px 260px at 80% 10%, rgba(106,168,255,.10), transparent 60%),
+      radial-gradient(600px 260px at 50% 120%, rgba(255,106,170,.10), transparent 60%);
+    filter: blur(40px); pointer-events:none; z-index:0;
+    animation: drift 18s linear infinite;
+  }
+  @keyframes drift{ to{ transform: rotate(360deg) } }
+
+  .wrap{
+    position:relative; z-index:2; width:100%; max-width:1100px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px; padding:18px; overflow:hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+    box-shadow: 0 30px 80px rgba(0,0,0,.65), inset 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .wrap::before{ content:""; position:absolute; inset:-60% -40%;
+    background: conic-gradient(from 0turn, rgba(255,211,107,.06), transparent 20%, rgba(167,123,255,.06), transparent 55%, rgba(107,194,255,.06), transparent 80%);
+    filter: blur(30px); z-index:0; animation: spin 16s linear infinite; opacity:.6;
+  }
+  @keyframes spin{ to{ transform: rotate(1turn) } }
+
+  .top{ position:relative; z-index:2; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .brand{ display:flex; gap:12px; align-items:center; }
+  .logo{
+    width:48px; height:48px; border-radius:14px;
+    background: radial-gradient(circle at 35% 35%, #fff6d0, var(--gold) 60%, #b07c22 100%);
+    color:#170f06; font-weight:900; display:grid; place-items:center;
+    box-shadow:0 0 0 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.45);
+  }
+  h1{ margin:0; font-size:20px; letter-spacing:.4px }
   .sub{ color:var(--muted); font-size:12px }
 
-  .hero{ margin:14px 0 4px; padding:14px; border-radius:14px; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.2));
-    border:1px solid rgba(255,255,255,.06); }
-  .hero h2{ margin:0 0 6px; font-size:24px }
-  .hero p{ margin:0; color:var(--muted); font-size:13px }
-  .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px; }
-  .btn{ padding:11px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:800; letter-spacing:.3px;
-    background:linear-gradient(90deg, #ffcc6c, #ff6a6a); color:#130a02; box-shadow:0 10px 28px rgba(255,106,106,.25), inset 0 0 0 1px rgba(255,255,255,.25); }
-  .btn-ghost{ background:transparent; color:#ffd; border:1px solid rgba(255,255,255,.12); box-shadow:none; font-weight:700; }
-
-  .board{ margin-top:14px; padding:12px; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
-  .safe{
-    position:relative; background: radial-gradient(120px 80px at 30% 30%, rgba(255,215,128,.10), rgba(255,215,128,.04) 60%, transparent 70%),
-    linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
-    border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px; text-align:center; cursor:pointer; user-select:none;
-    transition:.28s transform cubic-bezier(.2,.9,.2,1), box-shadow .28s, filter .28s; overflow:hidden;
+  .controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .btn, .ghost{
+    padding:10px 16px; border-radius:12px; border:0; cursor:pointer; font-weight:800; letter-spacing:.3px;
   }
-  .safe:hover{ transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,.55) }
-  .safe .icon{ font-size:44px; line-height:1; }
-  .safe .lab{ color:var(--muted); font-size:13px; margin-top:8px }
+  .btn{ background: linear-gradient(90deg, var(--gold), var(--rose)); color:#160d05; box-shadow:0 14px 30px rgba(255,106,106,.25), inset 0 0 0 1px rgba(255,255,255,.25) }
+  .ghost{ background: transparent; color:#fff; border:1px solid rgba(255,255,255,.15) }
+
+  .hero{ margin:14px 0 10px; padding:12px; border:1px solid rgba(255,255,255,.08); border-radius:14px; background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.2)); }
+  .hero h2{ margin:0 0 6px; font-size:24px }
+  .status{ color:var(--muted); font-size:13px; margin-top:6px }
+  .timer{ font-weight:800; color:#111; background:var(--gold); padding:6px 10px; border-radius:10px; }
+
+  .grid{ display:grid; gap:16px; grid-template-columns:repeat(3, minmax(160px,1fr)); }
+  @media (max-width:700px){ .grid{ grid-template-columns:repeat(2,minmax(140px,1fr)); } }
+  @media (max-width:480px){ .grid{ grid-template-columns:1fr 1fr; } }
+
+  .safe{
+    position:relative; padding:18px; text-align:center; border-radius:18px; cursor:pointer; user-select:none;
+    background:
+      radial-gradient(120px 90px at 30% 30%, rgba(255,211,107,.15), rgba(255,211,107,.06) 60%, transparent 70%),
+      linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.12);
+    transition: transform .25s cubic-bezier(.2,.9,.2,1), box-shadow .25s, filter .25s;
+    overflow:hidden;
+  }
+  .safe::before{
+    content:""; position:absolute; inset:-100% -100%;
+    background: conic-gradient(from 0turn, rgba(255,211,107,.22), rgba(255,106,170,.18), rgba(107,194,255,.18), rgba(169,123,255,.18), rgba(255,211,107,.22));
+    animation: aura 3.8s linear infinite; filter: blur(26px); opacity:.5; z-index:0;
+  }
+  @keyframes aura{ to{ transform: rotate(1turn) } }
+  .safe:hover{ transform: translateY(-6px); box-shadow: 0 22px 50px rgba(0,0,0,.55); }
+  .icon{ position:relative; z-index:1; font-size:48px; text-shadow:0 0 24px rgba(255,211,107,.35); }
+  .lab{ position:relative; z-index:1; margin-top:6px; color:var(--muted); font-size:13px }
+
   .safe.opening{ animation: tilt .8s both }
-  @keyframes tilt{ 0%{transform:perspective(600px) rotateX(0)}
-    40%{transform:perspective(600px) rotateX(12deg) translateY(-8px) scale(1.02)}
-    100%{transform:translateY(-6px) scale(1.03)} }
-  .safe.opened{ border-color:rgba(246,200,76,.6); background:linear-gradient(180deg, rgba(246,200,76,.25), rgba(255,255,255,.06)); }
+  @keyframes tilt{
+    0%{ transform: perspective(700px) rotateX(0) }
+    35%{ transform: perspective(700px) rotateX(14deg) translateY(-8px) scale(1.02) }
+    100%{ transform: translateY(-6px) scale(1.03) }
+  }
+  .safe.opened{
+    border-color: rgba(255,211,107,.7);
+    box-shadow: 0 30px 70px rgba(255,211,107,.25), inset 0 0 0 1px rgba(255,255,255,.25);
+    background: linear-gradient(180deg, rgba(255,211,107,.25), rgba(255,255,255,.08));
+  }
 
-  .status{ color:var(--muted); font-size:13px; margin:10px 4px 0 }
   .result{ margin-top:10px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .badge{ padding:8px 12px; border-radius:999px; background:rgba(246,200,76,.14); border:1px solid rgba(246,200,76,.4); color:#ffe9a8; font-weight:700; font-size:12px; }
-  .claim{ display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; border:1px dashed rgba(246,200,76,.55); color:#ffe9a8; text-decoration:none; font-weight:800; letter-spacing:.3px; transition: transform .2s; }
-  .claim:hover{ transform:translateY(-2px) }
-  .footer{ margin-top:18px; color:#8f97a6; font-size:12px }
+  .badge{ padding:8px 12px; border-radius:999px; background:rgba(255,211,107,.15); border:1px solid rgba(255,211,107,.45); color:#ffe9a8; font-weight:700; font-size:12px; }
+  .claim{ display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; border:1px dashed rgba(255,211,107,.6); color:#ffe9a8; text-decoration:none; font-weight:800; letter-spacing:.3px; transition: transform .2s; }
+  .claim:hover{ transform: translateY(-2px) }
 
-  .timer{ font-weight:800; color:#ffe9a8; padding:6px 10px; border-radius:10px; border:1px solid rgba(246,200,76,.4); background:rgba(246,200,76,.12); }
-  .mute{ background:transparent; color:#ffd; border:1px solid rgba(255,255,255,.12); border-radius:999px; padding:8px 12px; cursor:pointer; }
-  canvas.confetti{ position:fixed; inset:0; pointer-events:none; z-index:999; }
+  /* 金币粒子画布 */
+  canvas#fx{ position:fixed; inset:0; pointer-events:none; z-index:999; }
 </style>
 </head>
 <body>
-  <canvas id="confetti" class="confetti"></canvas>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo">FC</div>
-        <div>
-          <h1 id="brandTitle">FC66 Reward</h1>
-          <div id="brandSub" class="sub">Pick 1 Safe • Unlock Your Bonus</div>
-        </div>
-      </div>
-      <div class="sub" style="display:flex;gap:10px;align-items:center;">
-        <span id="timer" class="timer" style="display:none"></span>
-        <button id="muteBtn" class="mute">🔈</button>
+<div class="neon"></div>
+<canvas id="fx"></canvas>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">FC</div>
+      <div>
+        <h1 id="brandTitle">FC66 Reward</h1>
+        <div id="brandSub" class="sub">Pick 1 Safe • Unlock Your Bonus</div>
       </div>
     </div>
-
-    <div class="hero">
-      <h2>三选一保险箱</h2>
-      <p>请选择任意保险箱以解锁奖励。</p>
-      <div class="controls">
-        <button id="resetBtn" class="btn-ghost">重置</button>
-      </div>
+    <div class="controls">
+      <span id="timer" class="timer" style="display:none"></span>
+      <button id="mute" class="ghost">🔈</button>
+      <button id="reset" class="ghost">重置</button>
     </div>
-
-    <div id="board" class="board"></div>
-
-    <div class="result">
-      <div id="status" class="badge">状态：加载中…</div>
-      <a id="claimBtn" href="#" target="_blank" rel="noopener" class="claim">🎁 领取奖励</a>
-    </div>
-
-    <div class="footer">© FC66 Reward</div>
   </div>
+
+  <div class="hero">
+    <h2>三选一保险箱</h2>
+    <div class="sub">选择任意一个，看看你的好运！</div>
+    <div class="status" id="status">状态：加载配置中…</div>
+  </div>
+
+  <div id="grid" class="grid" aria-label="保险箱选择区"></div>
+
+  <div class="result">
+    <div id="badge" class="badge">等待选择</div>
+    <a id="claim" class="claim" href="#" target="_blank" rel="noopener">🎁 领取奖励</a>
+  </div>
+</div>
 
 <script>
 (async function(){
-  // ---- 简易音效（WebAudio） ----
+  // ---- 轻量音效（WebAudio） ----
   const AudioKit = (function(){
     const ctx = window.AudioContext ? new AudioContext() : null;
-    function beep(freq=880, t=0.08, type='sine', gain=0.05){
+    const play = (f=880, t=.09, type='sine', g=.06)=>{
       if(!ctx) return;
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = type; osc.frequency.value = freq;
-      g.gain.value = gain;
-      osc.connect(g); g.connect(ctx.destination);
-      osc.start();
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t);
-      setTimeout(()=>{ osc.stop(); osc.disconnect(); g.disconnect(); }, t*1000+20);
-    }
-    return {beep, ctx};
+      const o = ctx.createOscillator(), gn = ctx.createGain();
+      o.type = type; o.frequency.value = f; gn.gain.value = g;
+      o.connect(gn); gn.connect(ctx.destination); o.start();
+      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t);
+      setTimeout(()=>{ o.stop(); o.disconnect(); gn.disconnect(); }, t*1000+20);
+    };
+    return { play, ctx };
   })();
 
-  // ---- 轻量 confetti ----
-  const cfCanvas = document.getElementById('confetti');
-  const cfx = cfCanvas.getContext('2d');
-  let confettiArr = [];
-  function resize(){ cfCanvas.width = innerWidth; cfCanvas.height = innerHeight; }
-  window.addEventListener('resize', resize); resize();
-  function spawnConfetti(n=120){
-    confettiArr = Array.from({length:n}, ()=>({
-      x: Math.random()*cfCanvas.width,
-      y: -10 - Math.random()*cfCanvas.height*0.5,
-      r: 2+Math.random()*4,
-      vx: -1+Math.random()*2,
-      vy: 2+Math.random()*3,
-      a: Math.random()*Math.PI,
-      s: 0.02+Math.random()*0.04
-    }));
+  // ---- 金币粒子（Canvas） ----
+  const cv = document.getElementById('fx'), cx = cv.getContext('2d');
+  const resize = ()=>{ cv.width = innerWidth; cv.height = innerHeight; };
+  addEventListener('resize', resize); resize();
+  let coins = [];
+  function spawnCoins(n=160, atX=innerWidth/2, atY=innerHeight/3){
+    for(let i=0;i<n;i++){
+      coins.push({
+        x: atX + (Math.random()-0.5)*80,
+        y: atY + (Math.random()-0.5)*40,
+        r: 2 + Math.random()*4,
+        vx: -2 + Math.random()*4,
+        vy: -6 - Math.random()*5,
+        rot: Math.random()*Math.PI, vr: (Math.random()-.5)*0.3,
+        life: 1
+      });
+    }
   }
-  function drawConfetti(){
-    cfx.clearRect(0,0,cfCanvas.width, cfCanvas.height);
-    confettiArr.forEach(p=>{
-      p.x += p.vx; p.y += p.vy; p.a += p.s;
-      cfx.save();
-      cfx.translate(p.x, p.y);
-      cfx.rotate(p.a);
-      cfx.fillStyle = ['#ffd36b','#ff9e57','#6ecbff','#ff6aa8'][p.r%4|0];
-      cfx.fillRect(-p.r, -p.r, p.r*2, p.r*2);
-      cfx.restore();
+  function tick(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    coins.forEach(p=>{
+      p.vy += 0.2; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.015;
+      const g = cx.createLinearGradient(p.x-p.r, p.y-p.r, p.x+p.r, p.y+p.r);
+      g.addColorStop(0, 'rgba(255,223,128,'+Math.max(p.life,0)+')');
+      g.addColorStop(1, 'rgba(176,122,34,'+Math.max(p.life*0.9,0)+')');
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot);
+      cx.fillStyle = g; cx.fillRect(-p.r*1.2,-p.r*0.3,p.r*2.4,p.r*0.6);
+      cx.restore();
     });
-    confettiArr = confettiArr.filter(p=>p.y < cfCanvas.height+20);
-    if(confettiArr.length) requestAnimationFrame(drawConfetti);
+    coins = coins.filter(p=>p.life>0 && p.y < cv.height+40);
+    requestAnimationFrame(tick);
   }
-  function celebrate(){ spawnConfetti(140); drawConfetti(); }
+  tick();
 
-  const brandTitle = document.getElementById('brandTitle');
-  const brandSub   = document.getElementById('brandSub');
-  const board      = document.getElementById('board');
-  const statusEl   = document.getElementById('status');
-  const claimBtn   = document.getElementById('claimBtn');
-  const resetBtn   = document.getElementById('resetBtn');
-  const muteBtn    = document.getElementById('muteBtn');
-  const timerEl    = document.getElementById('timer');
+  // ---- DOM ----
+  const grid = document.getElementById('grid');
+  const statusEl = document.getElementById('status');
+  const badge = document.getElementById('badge');
+  const claim = document.getElementById('claim');
+  const titleEl = document.getElementById('brandTitle');
+  const subEl = document.getElementById('brandSub');
+  const timerEl = document.getElementById('timer');
+  const muteBtn = document.getElementById('mute');
+  const resetBtn = document.getElementById('reset');
 
-  let CFG=null, items=[], winner=null, audio=null, isMuted=false;
+  let CFG=null, winner=0, boxes=[], bgm=null, isMuted=false;
 
-  function setStatus(t){ statusEl.textContent = "状态：" + t; }
+  function setStatus(t){ statusEl.textContent = '状态：' + t; }
+  function setBadge(t){ badge.textContent = t; }
 
   async function loadConfig(){
-    const res = await fetch('config.json?ts=' + Date.now());
-    CFG = await res.json();
+    const url = 'https://admin.fc66reward.com/config.json?ts=' + Date.now();
+    try{
+      const r = await fetch(url);
+      CFG = await r.json();
+    }catch(e){
+      CFG = {
+        brand:{title:'FC66 Reward',subtitle:'Pick 1 Safe • Unlock Your Bonus'},
+        background:{type:'color', color:'#0a0c12'},
+        music:{enabled:false, url:'', autoplay:false, volume:0.35},
+        claim:{link:'#', button_text:'🎁 领取奖励'},
+        event:{show_timer:false, deadline:'2025-12-31T23:59:59+08:00'},
+        rewards:['Bonus A','Bonus B','Bonus C']
+      };
+    }
 
     // 品牌
-    brandTitle.textContent = CFG.brand?.title || 'FC66 Reward';
-    brandSub.textContent   = CFG.brand?.subtitle || 'Pick 1 Safe • Unlock Your Bonus';
+    titleEl.textContent = CFG.brand?.title || 'FC66 Reward';
+    subEl.textContent   = CFG.brand?.subtitle || 'Pick 1 Safe • Unlock Your Bonus';
 
     // 背景
     if(CFG.background?.type === 'image' && CFG.background?.image_url){
@@ -184,17 +242,12 @@
       document.body.style.backgroundPosition = 'center';
     }else{
       document.body.style.backgroundImage = 'none';
-      document.body.style.background = CFG.background?.color || '#0a0c12';
+      document.body.style.background = `linear-gradient(180deg, ${CFG.background?.color||'#07090f'}, #0e1420)`;
     }
 
-    // 音乐
-    if(audio){ try{audio.pause();}catch(e){} }
-    if(CFG.music?.enabled && CFG.music?.url){
-      audio = new Audio(CFG.music.url);
-      audio.loop = true;
-      audio.volume = Math.max(0, Math.min(1, CFG.music.volume ?? 0.35));
-      if(CFG.music.autoplay){ audio.play().catch(()=>{}); }
-    }else{ audio = null; }
+    // 按钮/链接
+    claim.href = CFG.claim?.link || '#';
+    claim.textContent = CFG.claim?.button_text || '🎁 领取奖励';
 
     // 倒计时
     if(CFG.event?.show_timer && CFG.event?.deadline){
@@ -204,56 +257,56 @@
       timerEl.style.display = 'none';
     }
 
-    // 按钮
-    claimBtn.href = CFG.claim?.link || '#';
-    claimBtn.textContent = CFG.claim?.button_text || '🎁 领取奖励';
+    // 背景音乐
+    if(bgm){ try{bgm.pause();}catch(e){} }
+    if(CFG.music?.enabled && CFG.music?.url){
+      bgm = new Audio(CFG.music.url);
+      bgm.loop = true;
+      bgm.volume = Math.max(0,Math.min(1, CFG.music.volume ?? 0.35));
+      if(CFG.music.autoplay){ bgm.play().catch(()=>{}); }
+    }else{ bgm = null; }
 
     render();
   }
 
   // 倒计时
-  let tmr = null;
+  let tmr=null;
   function startCountdown(deadline){
     if(tmr) clearInterval(tmr);
-    function fmt(n){ return n<10 ? '0'+n : ''+n; }
-    function tick(){
-      const now = new Date();
-      let ms = deadline - now;
-      if(ms <= 0){
-        timerEl.textContent = '活动已结束';
-        return clearInterval(tmr);
-      }
-      const d = Math.floor(ms/86400000); ms%=86400000;
-      const h = Math.floor(ms/3600000); ms%=3600000;
-      const m = Math.floor(ms/60000); ms%=60000;
-      const s = Math.floor(ms/1000);
-      timerEl.textContent = `倒计时 ${d}天 ${fmt(h)}:${fmt(m)}:${fmt(s)}`;
-    }
-    tick(); tmr = setInterval(tick, 1000);
+    const pad=n=>n<10?'0'+n:n;
+    const tick=()=>{
+      const now = new Date(); let ms = deadline - now;
+      if(ms<=0){ timerEl.textContent = '活动已结束'; return clearInterval(tmr); }
+      const d=Math.floor(ms/86400000); ms%=86400000;
+      const h=Math.floor(ms/3600000); ms%=3600000;
+      const m=Math.floor(ms/60000); ms%=60000;
+      const s=Math.floor(ms/1000);
+      timerEl.textContent = `倒计时 ${d}天 ${pad(h)}:${pad(m)}:${pad(s)}`;
+    };
+    tick(); tmr=setInterval(tick,1000);
   }
 
-  // 渲染 & 交互
-  function createItem(i){
-    const div = document.createElement('div');
-    div.className='safe';
-    div.innerHTML=`<div class='icon'>🔒</div><div class='lab'>保险箱 ${i+1}</div>`;
-    div.onclick = ()=> open(i);
-    return div;
-  }
+  // 渲染保险箱
   function render(){
-    board.innerHTML=''; items=[];
-    for(let i=0;i<3;i++){ const el=createItem(i); items.push(el); board.appendChild(el); }
+    grid.innerHTML=''; boxes.length=0;
+    for(let i=0;i<3;i++){
+      const el=document.createElement('div');
+      el.className='safe';
+      el.innerHTML=`<div class="icon">🔒</div><div class="lab">保险箱 ${i+1}</div>`;
+      el.onclick=()=>open(i, el);
+      boxes.push(el); grid.appendChild(el);
+    }
     winner = Math.floor(Math.random()*3);
-    setStatus('请选择一个保险箱');
+    setStatus('请选择一个保险箱'); setBadge('等待选择');
   }
-  function chooseReward(){
+
+  function pickReward(){
     const arr = Array.isArray(CFG.rewards) ? CFG.rewards.filter(Boolean) : [];
-    if(!arr.length) return null;
-    const idx = Math.floor(Math.random()*arr.length);
-    return arr[idx];
+    if(!arr.length) return '奖励';
+    return arr[Math.floor(Math.random()*arr.length)];
   }
-  function open(i){
-    const el = items[i];
+
+  function open(i, el){
     if(el.classList.contains('opened')) return;
     el.classList.add('opening');
     setTimeout(()=>{
@@ -261,25 +314,28 @@
       el.classList.add('opened');
       el.querySelector('.icon').textContent='📦';
       if(i===winner){
-        const rw = chooseReward();
-        setStatus('恭喜！获得 ' + (rw || '奖励'));
-        celebrate();
-        AudioKit.beep(1200, .12, 'square', .08);
-        setTimeout(()=>AudioKit.beep(1400,.1,'square',.07), 130);
+        const r = pickReward();
+        setStatus('恭喜！获得 '+r);
+        setBadge('中奖：'+r);
+        const b = el.getBoundingClientRect();
+        spawnCoins(160, b.left + b.width/2, b.top + scrollY + b.height/2);
+        AudioKit.play(1200,.12,'square',.08);
+        setTimeout(()=>AudioKit.play(1400,.1,'square',.07),120);
       }else{
-        setStatus('没中，再试试吧！');
-        AudioKit.beep(420, .1, 'sawtooth', .06);
+        setStatus('没中，再试一次吧！');
+        setBadge('未中奖');
+        AudioKit.play(420,.1,'sawtooth',.06);
       }
-    }, 520);
+    },520);
   }
 
-  resetBtn.onclick = ()=> render();
-  muteBtn.onclick = ()=>{
-    if(!audio){ return; }
-    isMuted = !isMuted;
-    audio.muted = isMuted;
+  // 控件
+  resetBtn.onclick = ()=>render();
+  muteBtn.onclick  = ()=>{
+    if(!bgm) return;
+    isMuted = !isMuted; bgm.muted = isMuted;
     muteBtn.textContent = isMuted ? '🔇' : '🔈';
-    if(!isMuted){ audio.play().catch(()=>{}); }
+    if(!isMuted){ bgm.play().catch(()=>{}); }
   };
 
   await loadConfig();
