@@ -111,13 +111,13 @@
   .claim{ display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; border:1px dashed rgba(255,211,107,.6); color:#ffe9a8; text-decoration:none; font-weight:800; letter-spacing:.3px; transition: transform .2s; }
   .claim:hover{ transform: translateY(-2px) }
 
-  /* 金币粒子画布 */
-  canvas#fx{ position:fixed; inset:0; pointer-events:none; z-index:999; }
+  /* 粒子画布（沿用你的结构：id="confetti"） */
+  canvas#confetti{ position:fixed; inset:0; pointer-events:none; z-index:999; }
 </style>
 </head>
 <body>
+<canvas id="confetti"></canvas>
 <div class="neon"></div>
-<canvas id="fx"></canvas>
 
 <div class="wrap">
   <div class="top">
@@ -137,7 +137,7 @@
 
   <div class="hero">
     <h2>三选一保险箱</h2>
-    <div class="sub">选择任意一个，看看你的好运！</div>
+    <div class="sub">请选择任意保险箱以解锁奖励。</div>
     <div class="status" id="status">状态：加载配置中…</div>
   </div>
 
@@ -150,57 +150,50 @@
 </div>
 
 <script>
-(async function(){
-  // ---- 轻量音效（WebAudio） ----
-  const AudioKit = (function(){
-    const ctx = window.AudioContext ? new AudioContext() : null;
-    const play = (f=880, t=.09, type='sine', g=.06)=>{
-      if(!ctx) return;
-      const o = ctx.createOscillator(), gn = ctx.createGain();
-      o.type = type; o.frequency.value = f; gn.gain.value = g;
-      o.connect(gn); gn.connect(ctx.destination); o.start();
-      gn.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t);
-      setTimeout(()=>{ o.stop(); o.disconnect(); gn.disconnect(); }, t*1000+20);
-    };
-    return { play, ctx };
-  })();
-
-  // ---- 金币粒子（Canvas） ----
-  const cv = document.getElementById('fx'), cx = cv.getContext('2d');
-  const resize = ()=>{ cv.width = innerWidth; cv.height = innerHeight; };
-  addEventListener('resize', resize); resize();
-  let coins = [];
-  function spawnCoins(n=160, atX=innerWidth/2, atY=innerHeight/3){
-    for(let i=0;i<n;i++){
-      coins.push({
-        x: atX + (Math.random()-0.5)*80,
-        y: atY + (Math.random()-0.5)*40,
-        r: 2 + Math.random()*4,
-        vx: -2 + Math.random()*4,
-        vy: -6 - Math.random()*5,
-        rot: Math.random()*Math.PI, vr: (Math.random()-.5)*0.3,
-        life: 1
-      });
-    }
-  }
-  function tick(){
-    cx.clearRect(0,0,cv.width,cv.height);
-    coins.forEach(p=>{
-      p.vy += 0.2; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.015;
-      const g = cx.createLinearGradient(p.x-p.r, p.y-p.r, p.x+p.r, p.y+p.r);
-      g.addColorStop(0, 'rgba(255,223,128,'+Math.max(p.life,0)+')');
-      g.addColorStop(1, 'rgba(176,122,34,'+Math.max(p.life*0.9,0)+')');
-      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot);
-      cx.fillStyle = g; cx.fillRect(-p.r*1.2,-p.r*0.3,p.r*2.4,p.r*0.6);
-      cx.restore();
+/* ---------------- 粒子金币（沿用 confetti 画布） ---------------- */
+const cv = document.getElementById('confetti'), cx = cv.getContext('2d');
+const resize = ()=>{ cv.width = innerWidth; cv.height = innerHeight; };
+addEventListener('resize', resize); resize();
+let coins = [];
+function spawnCoins(n=160, atX=innerWidth/2, atY=innerHeight/3){
+  for(let i=0;i<n;i++){
+    coins.push({
+      x: atX + (Math.random()-0.5)*80,
+      y: atY + (Math.random()-0.5)*40,
+      r: 2 + Math.random()*4,
+      vx: -2 + Math.random()*4,
+      vy: -6 - Math.random()*5,
+      rot: Math.random()*Math.PI, vr: (Math.random()-.5)*0.3,
+      life: 1
     });
-    coins = coins.filter(p=>p.life>0 && p.y < cv.height+40);
-    requestAnimationFrame(tick);
   }
-  tick();
+}
+(function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  coins.forEach(p=>{
+    p.vy += 0.2; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.015;
+    const g = cx.createLinearGradient(p.x-p.r, p.y-p.r, p.x+p.r, p.y+p.r);
+    g.addColorStop(0, 'rgba(255,223,128,'+Math.max(p.life,0)+')');
+    g.addColorStop(1, 'rgba(176,122,34,'+Math.max(p.life*0.9,0)+')');
+    cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot);
+    cx.fillStyle = g; cx.fillRect(-p.r*1.2,-p.r*0.3,p.r*2.4,p.r*0.6);
+    cx.restore();
+  });
+  coins = coins.filter(p=>p.life>0 && p.y < cv.height+40);
+  requestAnimationFrame(tick);
+})();
 
-  // ---- DOM ----
-  const grid = document.getElementById('grid');
+/* ---------------- 轻量音效 ---------------- */
+const AudioKit = (()=>{ const C=window.AudioContext?new AudioContext():null;
+  const play=(f=880,t=.09,type='sine',g=.06)=>{ if(!C) return; const o=C.createOscillator(),gn=C.createGain();
+    o.type=type; o.frequency.value=f; gn.gain.value=g; o.connect(gn); gn.connect(C.destination); o.start();
+    gn.gain.exponentialRampToValueAtTime(0.0001, C.currentTime + t);
+    setTimeout(()=>{o.stop();o.disconnect();gn.disconnect();}, t*1000+20);
+  }; return {play,ctx:C};
+})();
+
+/* ---------------- 业务逻辑 + 与后台“接线” ---------------- */
+(async () => {
   const statusEl = document.getElementById('status');
   const badge = document.getElementById('badge');
   const claim = document.getElementById('claim');
@@ -209,6 +202,7 @@
   const timerEl = document.getElementById('timer');
   const muteBtn = document.getElementById('mute');
   const resetBtn = document.getElementById('reset');
+  const grid = document.getElementById('grid');
 
   let CFG=null, winner=0, boxes=[], bgm=null, isMuted=false;
 
@@ -221,6 +215,7 @@
       const r = await fetch(url);
       CFG = await r.json();
     }catch(e){
+      console.warn('[FC66] 配置读取失败，使用兜底：', e);
       CFG = {
         brand:{title:'FC66 Reward',subtitle:'Pick 1 Safe • Unlock Your Bonus'},
         background:{type:'color', color:'#0a0c12'},
@@ -235,36 +230,36 @@
     titleEl.textContent = CFG.brand?.title || 'FC66 Reward';
     subEl.textContent   = CFG.brand?.subtitle || 'Pick 1 Safe • Unlock Your Bonus';
 
-    // 背景
+    // 背景（用 !important 覆盖原 gradient）
+    let s = document.getElementById('dynbg');
+    if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
     if(CFG.background?.type === 'image' && CFG.background?.image_url){
-      document.body.style.backgroundImage = `url('${CFG.background.image_url}')`;
-      document.body.style.backgroundSize = 'cover';
-      document.body.style.backgroundPosition = 'center';
+      s.textContent = `
+        body{ background-image:url('${CFG.background.image_url}') !important;
+              background-size:cover !important; background-position:center center !important;
+              background-attachment:fixed !important; }`;
     }else{
-      document.body.style.backgroundImage = 'none';
-      document.body.style.background = `linear-gradient(180deg, ${CFG.background?.color||'#07090f'}, #0e1420)`;
+      const c = CFG.background?.color || '#0a0c12';
+      s.textContent = `body{ background:${c} !important }`;
     }
 
-    // 按钮/链接
-    claim.href = CFG.claim?.link || '#';
-    claim.textContent = CFG.claim?.button_text || '🎁 领取奖励';
+    // 领取按钮
+    if (CFG.claim?.button_text) claim.textContent = CFG.claim.button_text;
+    if (CFG.claim?.link) { claim.href = CFG.claim.link; claim.target = '_blank'; claim.rel = 'noopener'; }
 
     // 倒计时
     if(CFG.event?.show_timer && CFG.event?.deadline){
       timerEl.style.display = 'inline-block';
       startCountdown(new Date(CFG.event.deadline));
-    }else{
-      timerEl.style.display = 'none';
-    }
+    } else { timerEl.style.display = 'none'; }
 
     // 背景音乐
     if(bgm){ try{bgm.pause();}catch(e){} }
     if(CFG.music?.enabled && CFG.music?.url){
-      bgm = new Audio(CFG.music.url);
-      bgm.loop = true;
+      bgm = new Audio(CFG.music.url); bgm.loop = true;
       bgm.volume = Math.max(0,Math.min(1, CFG.music.volume ?? 0.35));
       if(CFG.music.autoplay){ bgm.play().catch(()=>{}); }
-    }else{ bgm = null; }
+    } else { bgm = null; }
 
     render();
   }
@@ -292,7 +287,7 @@
     for(let i=0;i<3;i++){
       const el=document.createElement('div');
       el.className='safe';
-      el.innerHTML=`<div class="icon">🔒</div><div class="lab">保险箱 ${i+1}</div>`;
+      el.innerHTML=`<div class="icon">📦</div><div class="lab">保险箱 ${i+1}</div>`;
       el.onclick=()=>open(i, el);
       boxes.push(el); grid.appendChild(el);
     }
@@ -312,13 +307,12 @@
     setTimeout(()=>{
       el.classList.remove('opening');
       el.classList.add('opened');
-      el.querySelector('.icon').textContent='📦';
       if(i===winner){
         const r = pickReward();
         setStatus('恭喜！获得 '+r);
         setBadge('中奖：'+r);
         const b = el.getBoundingClientRect();
-        spawnCoins(160, b.left + b.width/2, b.top + scrollY + b.height/2);
+        spawnCoins(180, b.left + b.width/2, b.top + scrollY + b.height/2);
         AudioKit.play(1200,.12,'square',.08);
         setTimeout(()=>AudioKit.play(1400,.1,'square',.07),120);
       }else{
@@ -341,132 +335,5 @@
   await loadConfig();
 })();
 </script>
-</body><script>
-(async () => {
-  try {
-    const res = await fetch('https://admin.fc66reward.com/config.json?ts=' + Date.now());
-    const cfg = await res.json();
-
-    if (cfg?.background?.type === 'image' && cfg?.background?.image_url) {
-      // 用 <style> 动态覆盖 body 背景，带 !important，确保压过原来的 linear-gradient
-      const css = `
-        body{
-          background-image: url('${cfg.background.image_url}') !important;
-          background-size: cover !important;
-          background-position: center center !important;
-          background-attachment: fixed !important;
-          background-color: transparent !important;
-        }`;
-      let s = document.getElementById('dynbg');
-      if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
-      s.textContent = css;
-      console.log('[FC66] 背景已切换为图片：', cfg.background.image_url);
-    } else {
-      console.log('[FC66] 使用纯色背景：', cfg?.background?.color);
-      // 如果你希望纯色时也覆盖旧的 gradient，可以打开下面这段：
-      // const s = document.getElementById('dynbg') || Object.assign(document.createElement('style'), {id:'dynbg'});
-      // s.textContent = `body{ background: ${cfg?.background?.color || '#0a0c12'} !important }`;
-      // document.head.appendChild(s);
-    }
-  } catch (e) {
-    console.warn('[FC66] 读取配置失败：', e);
-  }
-})();
-</script>
-  <script>
-(async () => {
-  const CONFIG_URL = 'https://admin.fc66reward.com/config.json?ts=' + Date.now();
-
-  // 读取后台配置
-  let cfg;
-  try {
-    const r = await fetch(CONFIG_URL);
-    cfg = await r.json();
-  } catch (e) {
-    console.warn('[FC66] 拉取 config 失败：', e);
-    return;
-  }
-  console.log('[FC66] 已加载配置：', cfg);
-
-  // 1) 背景（强制覆盖任何 gradient）
-  if (cfg?.background?.type === 'image' && cfg?.background?.image_url) {
-    const css = `
-      body{
-        background-image:url('${cfg.background.image_url}') !important;
-        background-size:cover !important;
-        background-position:center center !important;
-        background-attachment:fixed !important;
-        background-color:transparent !important;
-      }`;
-    let s = document.getElementById('dynbg');
-    if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
-    s.textContent = css;
-    console.log('[FC66] 背景→图片', cfg.background.image_url);
-  } else if (cfg?.background?.color) {
-    let s = document.getElementById('dynbg');
-    if (!s) { s = document.createElement('style'); s.id = 'dynbg'; document.head.appendChild(s); }
-    s.textContent = `body{ background:${cfg.background.color} !important }`;
-    console.log('[FC66] 背景→纯色', cfg.background.color);
-  }
-
-  // 2) 品牌标题/副标题
-  const titleEl = document.querySelector('#brandTitle, .brand h1, h1');
-  if (titleEl && cfg?.brand?.title) titleEl.textContent = cfg.brand.title;
-  const subEl = document.querySelector('#brandSub, .sub, .brand small');
-  if (subEl && cfg?.brand?.subtitle) subEl.textContent = cfg.brand.subtitle;
-
-  // 3) 领取按钮（文字+链接）
-  const claimBtn = document.querySelector('#claim, a.claim, a[href="#"]');
-  if (claimBtn) {
-    if (cfg?.claim?.button_text) claimBtn.textContent = cfg.claim.button_text;
-    if (cfg?.claim?.link) {
-      claimBtn.setAttribute('href', cfg.claim.link);
-      claimBtn.setAttribute('target','_blank');
-      claimBtn.setAttribute('rel','noopener');
-    }
-  }
-
-  // 4) 背景音乐
-  try {
-    if (cfg?.music?.enabled && cfg?.music?.url) {
-      const audio = new Audio(cfg.music.url);
-      audio.loop = true;
-      audio.volume = Math.max(0, Math.min(1, cfg.music.volume ?? 0.35));
-      if (cfg.music.autoplay) audio.play().catch(()=>{});
-      // 若页面已有“静音”按钮，顺便绑定一下
-      const muteBtn = document.getElementById('mute');
-      if (muteBtn) {
-        let muted = false;
-        muteBtn.addEventListener('click', ()=>{
-          muted = !muted; audio.muted = muted; muteBtn.textContent = muted ? '🔇' : '🔈';
-          if (!muted) audio.play().catch(()=>{});
-        });
-      }
-      console.log('[FC66] 音乐→', cfg.music.url);
-    }
-  } catch(e){ console.warn('[FC66] 音乐初始化失败', e); }
-
-  // 5) 倒计时（如果你的页面没有显示位，可以忽略）
-  const timerEl = document.getElementById('timer');
-  if (timerEl && cfg?.event?.show_timer && cfg?.event?.deadline) {
-    timerEl.style.display = 'inline-block';
-    const pad=n=>n<10?'0'+n:n;
-    const deadline = new Date(cfg.event.deadline);
-    const tick = () => {
-      let ms = deadline - new Date();
-      if (ms <= 0) { timerEl.textContent = '活动已结束'; return clearInterval(tid); }
-      const d = Math.floor(ms/86400000); ms%=86400000;
-      const h = Math.floor(ms/3600000);  ms%=3600000;
-      const m = Math.floor(ms/60000);    ms%=60000;
-      const s = Math.floor(ms/1000);
-      timerEl.textContent = `倒计时 ${d}天 ${pad(h)}:${pad(m)}:${pad(s)}`;
-    };
-    tick(); const tid = setInterval(tick, 1000);
-  }
-})();
-</script>
-
-
+</body>
 </html>
-
-
